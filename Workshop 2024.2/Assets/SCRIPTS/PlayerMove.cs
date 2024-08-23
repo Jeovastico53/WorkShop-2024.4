@@ -5,6 +5,7 @@ using UnityEngine;
 public class playercontroller : MonoBehaviour
 {
      private Rigidbody2D rb;
+     private Animator anim;
      public float inputX;
      public bool inputJump;
      public float speed;
@@ -14,6 +15,7 @@ public class playercontroller : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -21,6 +23,8 @@ public class playercontroller : MonoBehaviour
     {
         Inputs();
         JumpLogic();
+        Animations();
+        Flip();
     }
 
     private void FixedUpdate()
@@ -36,6 +40,18 @@ public class playercontroller : MonoBehaviour
     public void MoveLogic()
     {
         rb.velocity = new Vector2(inputX * speed, rb.velocity.y);
+    }
+
+    public void Flip()
+    {
+        if (inputX < 0)
+        {
+            transform.localScale = new Vector2(-1, 1);
+        }
+        else if (inputX > 0)
+        {
+            transform.localScale = new Vector2(1, 1);
+        }
     }
 
     public void JumpLogic()
@@ -59,5 +75,10 @@ public class playercontroller : MonoBehaviour
         {
             inGround = false;
         }
+    }
+
+    public void Animations()
+    {
+        anim.SetFloat("Horizontal", rb.velocity.x);
     }
 }
